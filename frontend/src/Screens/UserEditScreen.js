@@ -15,6 +15,7 @@ const UserEditScreen = ({ match, history }) => {
   const [email, setEmail] = useState("")
   const [isAdmin, setIsAdmin] = useState(false)
   const [isSales, setIsSales] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -31,7 +32,10 @@ const UserEditScreen = ({ match, history }) => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET })
-      // history.push("/admin/userlist")
+      setTimeout(
+        () =>  history.push("/admin/userlist"), 
+        3000
+      );
     } else {
       if (!user.name || user._id !== userId) {
         dispatch(getUserDetails(userId))
@@ -47,6 +51,13 @@ const UserEditScreen = ({ match, history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(updateUser({ _id: userId, name, email, isAdmin, isSales }))
+
+    if(!errorUpdate){
+      setTimeout(
+        () =>  setSuccess(true), 
+        2000
+      );
+    }
   }
 
   return (
@@ -58,6 +69,7 @@ const UserEditScreen = ({ match, history }) => {
         <h1>Edit User</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+        {success && <Message variant="success">{'User update successfully!'}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

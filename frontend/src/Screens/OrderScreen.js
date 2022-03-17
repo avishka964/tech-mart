@@ -47,6 +47,7 @@ const OrderScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+  
     if (!userInfo) {
       history.push('/login');
     }
@@ -82,6 +83,7 @@ const OrderScreen = ({ match, history }) => {
     dispatch(deliverOrder(order));
   };
 
+  
 
   return loading ? (
     <Loader />

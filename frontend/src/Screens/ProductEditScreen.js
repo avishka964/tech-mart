@@ -20,6 +20,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState("")
   const [uploading, setUploading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -36,7 +37,11 @@ const ProductEditScreen = ({ match, history }) => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET })
-      history.push("/admin/productlist")
+      setTimeout(
+        () =>  history.push("/admin/productlist"), 
+        3000
+      );
+     
     } else {
       if (!product.name || product._id !== productId) {
         dispatch(listProductsDetails(productId))
@@ -87,6 +92,14 @@ const ProductEditScreen = ({ match, history }) => {
         description,
       })
     )
+    if(!errorUpdate){
+      setTimeout(
+        () =>  setSuccess(true), 
+        2000
+      );
+    }
+   
+   
   }
 
   return (
@@ -97,7 +110,7 @@ const ProductEditScreen = ({ match, history }) => {
       <FormContainer>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
-        <Message variant="success">Product update successfully</Message>
+        {success && <Message variant="success">{'Product update successfully!'}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
